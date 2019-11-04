@@ -1,5 +1,3 @@
-require "pry"
-
 module PayU
   module OAuth
     class Response
