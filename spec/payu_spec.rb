@@ -1,9 +1,6 @@
-RSpec.describe Payu do
+RSpec.describe PayU do
   it "has a version number" do
-    expect(Payu::VERSION).not_to be nil
-  end
-
-  it "does something useful" do
-    expect(false).to eq(true)
+    expect(PayU::VERSION).not_to be nil
   end
 end
+
