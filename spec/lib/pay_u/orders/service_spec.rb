@@ -3,11 +3,11 @@
 require 'pay_u/o_auth/authorization'
 require 'pay_u/http_client'
 require 'pay_u/orders/service'
+require 'pay_u/base_request'
 require 'securerandom'
 
 RSpec.describe PayU::Orders::Service do
-  let(:service) { described_class.new(authorization, http_client, default_order_params) }
-  let(:default_order_params) { { notify_url: 'https://example.com', merchant_pos_id: ENV['PAY_U_POS_ID'] } }
+  let(:service) { described_class.new(http_client) }
 
   let(:authorization) { PayU::OAuth::Authorization.new(http_client, client_id, client_secret) }
   let(:http_client) { PayU::HttpClient.new(host) }
@@ -16,7 +16,12 @@ RSpec.describe PayU::Orders::Service do
   let(:client_secret) { ENV['PAY_U_OAUTH_CLIENT_SECRET'] }
 
   describe '#place_order' do
-    subject { service.place_order(buyer, products, total_amount, meta) }
+    subject { service.place_order(request) }
+    let(:default_order_params) { { notify_url: 'https://example.com', merchant_pos_id: ENV['PAY_U_POS_ID'] } }
+    let(:headers) {
+      { "Authorization" => "Bearer #{authorization.access_token}" }
+    }
+    let(:request) { PayU::BaseRequest.new(headers, options) }
     let(:ext_order_id) { SecureRandom.uuid }
 
     let(:buyer) do
@@ -43,7 +48,16 @@ RSpec.describe PayU::Orders::Service do
         description: "RTV market",
         currency_code: "PLN",
         ext_order_id: ext_order_id,
-      }
+      }.merge(default_order_params)
+    end
+    let(:options) do
+      meta.merge(
+        {
+          buyer: buyer,
+          products: products,
+          total_amount: total_amount
+        }
+      )
     end
 
     it { expect(subject.success?).to be_truthy }
