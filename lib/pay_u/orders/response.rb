@@ -1,8 +1,12 @@
+require 'json'
+require 'pry'
+
 module PayU
   module Orders
     class Response
-      def initialize(response_body)
-        @response_body = response_body
+      def initialize(response)
+        @response = response
+        @body = JSON.parse(response.body)
       end
 
       def success?
@@ -10,19 +14,19 @@ module PayU
       end
 
       def status
-        @response_body['status']
+        @body['status']
       end
 
       def redirect_url
-        @response_body['redirectUri']
+        @body['redirectUri']
       end
 
       def order_id
-        @response_body['orderId']
+        @body['orderId']
       end
 
       def ext_order_id
-        @response_body['extOrderId']
+        @body['extOrderId']
       end
     end
   end

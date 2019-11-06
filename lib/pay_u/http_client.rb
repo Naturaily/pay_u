@@ -16,8 +16,7 @@ module PayU
     end
 
     def post(path, request)
-      response = Net::HTTP.post(uri(path), request.to_json, DEFAULT_HEADER.merge(request.headers))
-      parse_json(response.body)
+      Net::HTTP.post(uri(path), request.to_json, DEFAULT_HEADER.merge(request.headers))
     end
 
     private

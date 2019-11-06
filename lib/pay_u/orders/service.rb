@@ -1,4 +1,5 @@
 require_relative 'response'
+require 'pry'
 
 module PayU
   module Orders
@@ -12,6 +13,12 @@ module PayU
       def place_order(request)
         Orders::Response.new(
           @http_client.post(ENDPOINT, request)
+        )
+      end
+
+      def refund_order(order_id, request)
+        Orders::Response.new(
+          @http_client.post("#{ENDPOINT}/#{order_id}/refunds", request)
         )
       end
     end
