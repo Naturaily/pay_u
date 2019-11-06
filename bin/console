@@ -3,6 +3,15 @@
 require "bundler/setup"
 require "payu"
 
+PayU.configure do |c|
+  c.pos_id = ENV['PAY_U_POS_ID']
+  c.second_key = ENV['PAY_U_SECOND_KEY']
+  c.oauth_client_id = ENV['PAY_U_OAUTH_CLIENT_ID']
+  c.oauth_client_secret = ENV['PAY_U_OAUTH_CLIENT_SECRET']
+  c.env = 'sandbox'
+  c.notify_url = 'https://example.com'
+end
+
 # You can add fixtures and/or initialization code here to make experimenting
 # with your gem easier. You can also use a different console, if you like.
 
