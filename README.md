@@ -20,7 +20,80 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+First, configure the library with your PayU Merchant configuration. You can do it like this in `config/initializers/pay_u`:
+
+```
+PayU.configure do |c|
+  c.pos_id = ENV['PAY_U_POS_ID']
+  c.second_key = ENV['PAY_U_SECOND_KEY']
+  c.oauth_client_id = ENV['PAY_U_OAUTH_CLIENT_ID']
+  c.oauth_client_secret = ENV['PAY_U_OAUTH_CLIENT_SECRET']
+  c.env = 'sandbox' # optional, it defaults to 'production'
+  c.notify_url = 'https://example.com'
+end
+```
+
+After that, you are free to use it. The main concern here is the PayU::Client which is accessible throught `PayU.client` method.
+
+Available functionality:
+
+### Placing orders
+
+```
+  meta = {
+    "customer_ip": "127.0.0.1",
+    "description": "RTV market",
+    "currency_code": "PLN",
+    "total_amount": "15000",
+    "ext_order_id":"XEGB34325" # your order's id
+  }
+
+  buyer = {
+    email: "john.doe@example.com",
+    phone: "654111654",
+    first_name: "John",
+    last_name: "Doe"
+  }
+
+  products = [
+    {
+      name: "Wireless Mouse for Laptop",
+      unit_price: "15000",
+      quantity: "1"
+    }
+  ]
+
+  total_amount = "15000"
+
+  response = PayU.client.place_order(buyer, products, total_amount, meta)
+
+  response.success?
+  #=> true
+  response.order_id
+  #=> "WZHF5FFDRJ140731GUEST000P01"
+  response.ext_order_id
+  #=> "XEGB34325"
+  response.redirect_url
+  #=> # this will return a redirection url to PayU
+```
+
+Which will return a `PayU::Orders::Response` object which wraps up everything from the response.
+
+### Refunding orders
+
+```
+  order_id = "WZHF5FFDRJ140731GUEST000P01"
+  amount = 15000 # optional
+
+  response = PayU.client.place_order(order_id, amount = nil)
+
+  response.success?
+  #=> true
+  response.ext_order_id
+  #=> "XEGB34325"
+  response.order_id
+  #=> "WZHF5FFDRJ140731GUEST000P01"
+```
 
 ## Development
 
