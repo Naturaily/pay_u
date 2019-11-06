@@ -73,5 +73,14 @@ RSpec.describe PayU::Orders::Service do
 
     it { expect(subject.success?).to be_falsey }
   end
+
+  describe '#cancel_order' do
+    let(:request) { PayU::BaseRequest.new(headers) }
+    let(:order_id) { "H9LL64F37H160126GUEST000P01" }
+
+    subject { service.refund_order(order_id, request) }
+
+    it { expect(subject.success?).to be_falsey }
+  end
 end
 

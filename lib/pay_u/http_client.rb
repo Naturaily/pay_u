@@ -19,6 +19,10 @@ module PayU
       Net::HTTP.post(uri(path), request.to_json, DEFAULT_HEADER.merge(request.headers))
     end
 
+    def delete(path, request)
+      NET::HTTP.delete(path, DEFAULT_HEADER.merge(request.headers))
+    end
+
     private
 
     def parse_json(json_string)

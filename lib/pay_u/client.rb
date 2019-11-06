@@ -26,8 +26,11 @@ module PayU
 
     def refund_order(order_id, amount = nil)
       request_hash = { refund: { description: "Refund" } }.merge(refund_amount(amount))
-      request = PayU::BaseRequest.new(headers, request_hash)
-      orders_service.refund_order(order_id, request)
+      orders_service.refund_order(order_id, PayU::BaseRequest.new(headers, request_hash))
+    end
+
+    def cancel_order(order_id)
+      orders_service.cancel_order(order_id, PayU::BaseRequest.new(headers))
     end
 
     private

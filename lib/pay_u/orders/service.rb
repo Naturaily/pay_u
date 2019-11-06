@@ -20,6 +20,12 @@ module PayU
           @http_client.post("#{ENDPOINT}/#{order_id}/refunds", request)
         )
       end
+
+      def cancel_order(order_id, request)
+        Orders::Response.new(
+          @http_client.delete("#{ENDPOINT}/#{order_id}", request)
+        )
+      end
     end
   end
 end
