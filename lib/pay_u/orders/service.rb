@@ -1,5 +1,4 @@
 require_relative 'response'
-require 'pry'
 
 module PayU
   module Orders

@@ -1,5 +1,4 @@
 require 'json'
-require 'pry'
 
 module PayU
   module Orders
@@ -9,12 +8,16 @@ module PayU
         @body = JSON.parse(response.body)
       end
 
+      def code
+        @response.code
+      end
+
       def success?
-        status['statusCode'] == 'SUCCESS'
+        status.success?
       end
 
       def status
-        @body['status']
+        Status.new(@body['status'])
       end
 
       def redirect_url
@@ -27,6 +30,30 @@ module PayU
 
       def ext_order_id
         @body['extOrderId']
+      end
+
+      class Status
+        SUCCESS_STATUS = 'SUCCESS'
+
+        def initialize(status)
+          @status = status
+        end
+
+        def success?
+          status_code == SUCCESS_STATUS
+        end
+
+        def status_code
+          @status['statusCode']
+        end
+
+        def code_literal
+          @status['codeLiteral']
+        end
+
+        def code
+          @status['code']
+        end
       end
     end
   end
