@@ -20,7 +20,8 @@ Or install it yourself as:
 
 ## Usage
 
-First, configure the library with your PayU Merchant configuration. You can do it like this in `config/initializers/pay_u`:
+First - read the API documentation here: `http://developers.payu.com/en/restapi.html#overview` to get a grip of what this client does.
+Configure the library with your PayU Merchant configuration. You can do it like this in `config/initializers/pay_u`:
 
 ```
 PayU.configure do |c|
@@ -85,7 +86,22 @@ Which will return a `PayU::Orders::Response` object which wraps up everything fr
   order_id = "WZHF5FFDRJ140731GUEST000P01"
   amount = 15000 # optional
 
-  response = PayU.client.place_order(order_id, amount = nil)
+  response = PayU.client.refund_order(order_id, amount = nil)
+
+  response.success?
+  #=> true
+  response.ext_order_id
+  #=> "XEGB34325"
+  response.order_id
+  #=> "WZHF5FFDRJ140731GUEST000P01"
+```
+
+### Canceling Orders
+
+```
+  order_id = "WZHF5FFDRJ140731GUEST000P01"
+
+  response = PayU.client.cancel_order(order_id)
 
   response.success?
   #=> true
