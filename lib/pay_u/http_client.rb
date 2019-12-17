@@ -34,7 +34,7 @@ module PayU
     end
 
     def formatted_url(url)
-      url.delete_suffix('/')
+      url.chomp('/')
     end
   end
 end

@@ -44,7 +44,7 @@ module PayU
     end
 
     def orders_service
-      @orders_service ||= Orders::Service.new(authorization, @http_client, default_order_params)
+      @orders_service ||= Orders::Service.new(@http_client)
     end
 
     def default_order_params
